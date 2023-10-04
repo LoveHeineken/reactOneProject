@@ -1,0 +1,4 @@
+npm create vite@latest
+npm i
+npm run dev
+# download node if you cant use npm command
