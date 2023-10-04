@@ -1,34 +1,35 @@
 import { useEffect, useState } from "react"
-import "./styles.css"
 import { NewTodoForm } from "./NewTodoForm"
+import "./styles.css"
+import { TodoList } from "./TodoList"
 
-export default function App(){
+export default function App() {
   // setNewItem("hogehoge")
   const [todos, setTodos] = useState(() => {
     const localValue = localStorage.getItem("ITEMS")
-    if (localValue === null) return []
+    if (localValue == null) return []
+
     return JSON.parse(localValue)
   })
 
-  useEffect(()=>{
+  useEffect(() => {
     localStorage.setItem("ITEMS", JSON.stringify(todos))
   }, [todos])
 
   function addTodo(title) {
-        setTodos((currentTodos) => {
-          return [
-            ...currentTodos,
-            { id: crypto.randomUUID(), title, completed: false },
-          ]
-        })
+    setTodos(currentTodos => {
+      return [
+        ...currentTodos,
+        { id: crypto.randomUUID(), title, completed: false },
+      ]
+    })
   }
 
-  function toggleTodo(id, completed){
+  function toggleTodo(id, completed) {
     setTodos(currentTodos => {
       return currentTodos.map(todo => {
-        if(todo.id === id){
-          todo.completed = completed;
-          // return {...todo, completed }
+        if (todo.id === id) {
+          return { ...todo, completed }
         }
 
         return todo
@@ -36,19 +37,17 @@ export default function App(){
     })
   }
 
-  function deleteTodo(id){
+  function deleteTodo(id) {
     setTodos(currentTodos => {
       return currentTodos.filter(todo => todo.id !== id)
     })
   }
 
-  console.log(todos)
-
   return (
     <>
-      <NewTodoForm onSubmit={addTodo}/>
+      <NewTodoForm onSubmit={addTodo} />
       <h1 className="header">Todo List</h1>
-      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo}/>
+      <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} />
     </>
   )
 }
